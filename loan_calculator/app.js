@@ -1,24 +1,15 @@
 'use strict';
-/* eslint-disable */
+//* eslint-disable */
 
 const HTTP = require('http');
 const URL = require('url').URL;
 const QUERYSTRING = require('querystring');
 const PORT = 3000;
-const PATH = require('path');
-const FS = require('fs');
 const HANDLEBARS = require('handlebars');
 const ROUTER = require('router');
 const FINALHANDLER = require('finalhandler');
 const SERVESTATIC = require('serve-static');
 const APR = 5;
-const MIME_TYPES = {
-  '.css': 'text/css',
-  '.js': 'application/javascript',
-  '.jpg': 'image/jpeg',
-  '.png': 'image/png',
-  '.ico': 'image/x-icon'
-};
 
 const LOAN_OFFER_SOURCE = `
 <!DOCTYPE html>
@@ -101,16 +92,16 @@ function render(template, data) {
 
 function parseFormData(request, callback) {
   let body = '';
-    request.on('data', chunk => {
-      body += chunk.toString();
-    });
-    request.on('end', () => {
-      let data = QUERYSTRING.parse(body);
-      data.amount = Number(data.amount);
-      data.duration = Number(data.duration);
-      callback(data);
-    });
-};
+  request.on('data', chunk => {
+    body += chunk.toString();
+  });
+  request.on('end', () => {
+    let data = QUERYSTRING.parse(body);
+    data.amount = Number(data.amount);
+    data.duration = Number(data.duration);
+    callback(data);
+  });
+}
 
 function calculateMonthlyPayment(amount, duration, apr) {
   const MONTHS_IN_YR = 12;
@@ -140,12 +131,12 @@ function getLoanParams(path) {
     duration: Number(searchParams.get('duration'))
   };
 }
-
+/*
 function getPathname(path) {
   const myURL = new URL(path, `http://localhost:${PORT}`);
   return myURL.pathname;
 }
-
+*/
 let router = ROUTER();
 router.use(SERVESTATIC('public'));
 
@@ -180,7 +171,7 @@ router.post('/loan-offer', function (req, res) {
   });
 });
 
-router.get('*', function(req, res){
+router.get('*', function(req, res) {
   res.statusCode = 404;
   res.end();
 });
